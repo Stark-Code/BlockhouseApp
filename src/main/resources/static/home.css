@@ -1,0 +1,200 @@
+/* General styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* CSS for wave effect background */
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    height: 100vh;
+    background: #007bff;
+    /* Fallback for older browsers */
+    background: -webkit-linear-gradient(to bottom, #007bff, #143d73);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #007bff, #143d73);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+hr {
+    border-color: #636363 !important;
+    border-width: 1px !important;
+    border-style: solid !important;
+    border-radius: 1px !important;
+}
+
+.login {
+    display: flex;
+    justify-content: right;
+    margin-right: 2em;
+}
+
+.login a {
+    margin-top: 2em;
+    margin-right: 2em;
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+}
+
+/* Intro section */
+.intro {
+    display: flex;
+    margin: 0em 5em;
+    color: white;
+    align-items: flex-start;
+}
+
+.intro h2 {
+    font-size: 38px;
+    margin-bottom: 1rem;
+}
+
+.intro p {
+    font-size: 28px;
+}
+
+.intro-image {
+    width: 50%;
+    margin-left: 2rem;
+}
+
+.intro-image img {
+    width: 250px;
+    height: 250px;
+}
+
+.intro-btns button {
+    font-size: 1.5em;
+    color: white;
+    margin: 1em;
+}
+
+/* Content */
+
+.content {
+    position: relative;
+}
+
+.wave {
+    position: absolute;
+    top: 80%;
+    left: 0;
+    height: 1400px;
+    width: 100%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff' fill-opacity='1' d='M0,192L48,186.7C96,181,192,171,288,170.7C384,171,480,181,576,192C672,203,768,213,864,208C960,203,1056,181,1152,181.3C1248,181,1344,203,1392,213.3L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+    background-size: cover;
+    z-index: -1;
+    transform: translateY(-50%);
+}
+
+.wave-circle-blue {
+    position: absolute;
+    border-radius: 50%;
+    top: 55%;
+    left: 35%;
+    background-color: rgba(0, 123, 255, 0.6);;
+    width: 400px;
+    height: 400px;
+    mix-blend-mode: multiply;
+}
+
+.wave-circle-yellow {
+    position: absolute;
+    border-radius: 50%;
+    top: 60%;
+    left: 55%;
+    background-color: rgba(255, 255, 6, 0.6);;
+    width: 200px;
+    height: 200px;
+    /* mix-blend-mode: multiply; */
+    /* z-index: 1; */
+}
+
+.wave-circle-red {
+    position: absolute;
+    border-radius: 50%;
+    top: 70%;
+    left: 35%;
+    background-color: rgba(255, 0, 0, 0.6);;
+    width: 300px;
+    height: 300px;
+    /* z-index: 1; */
+}
+
+.background-svg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.upper-content {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    margin: 2em 5em;
+}
+
+.lower-content {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    align-items: center;
+    /* margin-right: 7em; */
+    margin-top: 5em;
+}
+
+.lower-left-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* background-image: url("/images/istockphoto-593415822-640x640.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0.2 */
+
+.story {
+    flex: 1 1 300px;
+    margin: 1rem;
+    padding: 1rem;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    text-align: center;
+    font-size: 1.1em;
+}
+
+.ai-story {
+    margin: 1rem;
+    box-shadow: 1px 1px 3px 0px black;
+    padding-top: 2rem;
+    border-radius: 10px;
+    background: #007bff;
+    text-align: center;
+    max-width: 50%;
+    color: white;
+    align-self: flex-end;
+}
+
+.ai-p {
+    width: 80%;
+    font-size: 1.4em;
+    margin: 2em auto;
+}
+
+/* Sign Up */
+.register-div {
+    max-width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: 20%;   
+}

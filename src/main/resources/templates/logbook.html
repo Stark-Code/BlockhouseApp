@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="/common.css">
+    <title>Logbook</title>
+</head>
+
+<body>
+    <!-- Header -->
+    <div th:insert="~{fragments/header}"></div>
+    <!-- Nav Bar -->
+    <div th:insert="~{fragments/nav}"></div>
+
+    <section class="newsfeed">
+        <div class="newsfeed-content">
+            <!-- New section for displaying logs and their corresponding routes -->
+            <div class="logged-routes">
+                <span style="margin-left: 1em">Logged Routes:</span>
+                <span th:text="${logs.size()}"></span>
+                <br>
+                <span style="margin-left: 1em" th:text="'Score: ' + ${loggedInUser.points}"></span>
+                <br>
+                <!-- Iterate over logs grouped by date -->
+                <div th:each="entry : ${logsGroupedByDate}" class="category">
+                    <!-- Display Date as a clickable section header -->
+                    <div class="date-section" onclick="toggleExpand(this)">
+                        <span th:text="${entry.key}"></span> <!-- Date -->
+                        <br>
+                        <span th:text="${entry.value.size()} + ' problems'"></span> <!-- Number of climbs -->
+                    </div>
+
+                    <!-- List of Routes for each date, hidden initially -->
+                    <ul class="route-list" style="display: none;">
+                        <li th:each="log : ${entry.value}">
+                            <div class="log">
+                                <!-- Display Route Information -->
+                                <div class="route-info">
+                                    <a th:href="@{/route/get_route(routeId=${log.route.id}, gymId=${gym.id})}">
+                                        <span th:text="${log.route.name}" class="route-name"></span>
+                                    </a>
+                                    <br>
+                                    <span>Difficulty: </span><span th:style="'background-color: ' + ${log.route.grade}"
+                                        class="grade"></span>
+                                </div>
+
+                                <!-- Display Log Information -->
+                                <div class="log-info">
+                                    <span th:text="'Attempts: ' + ${log.numberOfTries.getDisplayName()}"></span>
+                                    <br>
+                                    <!-- Star Rating for Logs -->
+                                    <div class="star-rating">
+                                        <th:block th:each="star : ${#numbers.sequence(1, 5)}">
+                                            <!-- Full Star -->
+                                            <span th:if="${star <= log.rating}" class="full-star"></span>
+                                            <!-- You can use your own star symbol -->
+
+                                            <!-- Half Star -->
+                                            <span th:if="${star > log.rating and star - 1 < log.rating}"
+                                                class="half-star"></span> <!-- You can use your own half-star symbol -->
+
+                                            <!-- Empty Star -->
+                                            <span th:if="${star > log.rating and star - 1 >= log.rating}"
+                                                class="empty-star"></span>
+                                            <!-- You can use your own empty star symbol -->
+                                        </th:block>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
+    <!-- <script src="src=logout.js" th:src="@{/logout.js}"></script> -->
+    <script th:src="@{/logbook.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var mainServerUrl = /*[[${mainServerUrl}]]*/ 'defaultMainServerUrl';
+        /*]]>*/
+    </script>
+</body>

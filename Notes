@@ -1,0 +1,40 @@
+scp -i "/home/starkcode/Java/Blockhouse App/Blockhouse_pem_key.pem" "/home/starkcode/Java/Blockhouse App/route_tracker/target/route_tracker-0.0.1-SNAPSHOT.jar" ec2-user@ec2-3-84-244-38.compute-1.amazonaws.com:~/Blockhouse_Server/Main_Server/
+
+Challenge Ideas
+
+Early Bird/Late Owl: Climb a route within the first/last hour the gym is open.
+Consistency Is Key: Climb three routes of the same grade in a row without falling.
+Endurance Beast: Log 10, 20, 30, 40, 50 unique routes in a single session.
+Gym Rat: Visit the gym 10 times in one month.
+Visit the gym 3 days in a row
+Visit the gym 5 days in a row
+Visit the gym 7 days in a row
+Visit the gym on a Monday
+Visit the gym on a Tuesday
+Visit the gym on a Wednesday
+Visit the gym on a Thursday
+Visit the gym on a Friday
+Visit the gym on a Saturday
+Visit the gym on a Sunday
+Complete 25 CRIMPY("Crimpy") 
+Complete 25 SLOPEY("Slopey"),
+Complete 25 PINCHY("Pinchy"),
+Complete 25 JUGGY("Juggy"),
+Complete 25 DYNAMIC("Dynamic"),
+Complete 25 STATIC("Static"),
+Complete 25 TECHNICAL("Technical"),
+Complete 25 POWERFUL("Powerful"),
+Complete 25 BALANCY("Balancy"),
+Complete 25 SLAB("Slab");
+Complete a white route 10x in a single session
+Complete a green route 9x in a single session
+Complete a blue route 7x in a single session
+Complete a orange route 6x in a single session
+Complete a red route 5x in a single session
+Compete a black route 2x in a single session
+Log 100 white routes
+Log 100 green routes
+Log 100 blue routes
+Log 100 orange routes
+Log 100 red routes
+Log 25 black routes

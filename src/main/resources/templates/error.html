@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Error Page</title>
+    <link rel="stylesheet" href="/home.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+
+<body class="container">
+    <svg class="background-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 2000">
+        <path d="M0,1000 C800,600 1600,1400 2000,1000" stroke="#007bff" stroke-width="1" fill="none">
+        </path>
+    </svg>
+    <svg class="background-svg" style="rotate: 15deg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 2000">
+        <path d="M0,1000 C100,600 1600,1400 2000,1000" stroke="#007bff" stroke-width="1" fill="none">
+        </path>
+    </svg>
+    <svg class="background-svg" style="rotate: 35deg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 2000">
+        <path d="M0,1000 C800,600 1600,1400 2000,1000" stroke="#007bff" stroke-width="1" fill="none">
+        </path>
+    </svg>
+
+    <div class="error-div story" id="error-div" style="margin-top: 25%;">
+        <h2>Error</h2>
+        <!-- Display the flash attribute here -->
+        <div th:text="${errorMessage}" style="width: 100%; color: red; margin-top: 1em;"></div>
+
+        <!-- Generic error message -->
+        <div class="generic-error-message" style="width: 100%; color: black; margin-top: 1em;">
+            Something went wrong!
+        </div>
+        <a href="javascript:void(0);" onclick="window.history.back();" class="btn btn-primary mt-2">Return to Previous
+            Page</a>
+    </div>
+
+</body>
+
+</html>

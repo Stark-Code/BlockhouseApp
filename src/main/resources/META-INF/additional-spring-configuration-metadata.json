@@ -1,0 +1,24 @@
+{
+    "properties": [
+        {
+            "name": "ip",
+            "type": "java.lang.String",
+            "description": "A description for 'ip'"
+        },
+        {
+            "name": "auth.server.url",
+            "type": "java.lang.String",
+            "description": "A description for 'auth.server.url'"
+        },
+        {
+            "name": "main.server.url",
+            "type": "java.lang.String",
+            "description": "A description for 'main.server.url'"
+        },
+        {
+            "name": "developer.api.key",
+            "type": "java.lang.String",
+            "description": "A description for 'developer.api.key'"
+        }
+    ]
+}

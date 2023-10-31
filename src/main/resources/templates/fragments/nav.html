@@ -1,0 +1,17 @@
+<nav>
+    <a id="route-explorer-tab" th:href="@{/nav/get_route_explorer/} + ${gym.id}" class="tab">
+        <img src="/images/search.png" >
+    </a>
+    <a id="log-book-tab"th:href="@{/nav/get_logbook/} + ${gym.id}" class="tab">
+        <img src="/images/logbook.png" >
+    </a>
+    <a id="ranking-tab" th:href="@{/nav/get_ranking/} + ${gym.id}" class="tab">
+        <img src="/images/leaderboard.png" >
+    </a>
+    <!-- <a id="ranking-tab" th:href="@{/nav/get_badges/} + ${gym.id}" class="tab">
+        <img src="/images/fullstar.png" >
+    </a> -->
+    <a id="admin-tab" th:href="@{/nav/get_admin/} + ${gym.id}" class="tab" th:if="${is_admin != null ? is_admin : false}">
+        <img src="/images/admin.png">
+    </a>
+</nav>

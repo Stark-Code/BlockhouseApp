@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/common.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <title>Blockhouse Admin</title>
+</head>
+
+<body>
+    <!-- Header -->
+    <div th:insert="~{fragments/header}"></div>
+    <!-- Nav Bar -->
+    <div th:insert="~{fragments/nav}"></div>
+
+    <div class="category">
+        <ul class="protocols">
+            <li><a id="showAddMemberForm"><strong>Add Member</strong></a></li>
+            <li><a id="showAddRouteForm"><strong>Add Route</strong></a></li>
+            <li><a id="showAddWallForm"><strong>Add Wall</strong></a></li>
+            <li><a id="showEditWallForm"><strong>Edit Wall</strong></a></li>
+            <li><a id="showEditRouteForm"><strong>Edit Route</strong></a></li>
+        </ul>
+    </div>
+
+    <!-- Display updateMessage flash attribute if it exists -->
+    <div th:if="${updateMessage != null}" style="color: green; margin-left: 1em;">
+        <span th:text="${updateMessage}"></span>
+    </div>
+
+    <!-- Hidden Add Member Form -->
+    <div id="addMemberForm" style="display:none;">
+        <!-- Invite Users -->
+        <form action="/user/invite_user" method="post" id="inviteForm">
+            <div class="instruction-icon-div">
+                <p class="instruction-icon-text">User Manager</p>
+                <i class="fas fa-question-circle instruction-icon" style="font-size: 24px; cursor: pointer;"></i>
+            </div>
+
+            <input type="email" id="invite-email" name="email" placeholder="Invite with email address">
+            <input type="hidden" th:value="${gym.id}" name="gymId" id="gymId">
+            <input class="btn btn-primary m-2" type="submit" id="invite-button" value="Invite">
+            <span class="form-text text-muted">
+                Invited users will receive an email with a link to create an account, invitation code expires
+                after 72 hours.
+            </span>
+        </form>
+    </div>
+
+    <!-- Hidden Add Route Form -->
+    <div id="addRouteForm" style="display: none;">
+        <form action="/route/save_route" method="post" style="background: none;">
+
+            <!-- Route Name -->
+            <div class="detail-field">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" class="detail-title edit-input" required>
+            </div>
+
+            <!-- Route Setter -->
+            <div class="detail-field">
+                <label for="setter">Setter:</label>
+                <input type="text" id="setter" name="setter" th:value="${loggedInUser.getName()}"
+                    class="detail-title edit-input" required>
+            </div>
+
+            <!-- Route Grade -->
+            <div class="detail-field">
+                <label for="grade">Grade:</label>
+                <select id="grade" name="grade" required class="form-select"
+                    style="width: auto; min-width: min-content;">
+                    <option th:each="grade : ${T(com.movsoftware.blockhouse.route_tracker.pojo.Grade).values()}"
+                        th:value="${grade.name()}" th:text="${grade.displayName}">Grade</option>
+                </select>
+            </div>
+
+            <!-- Route Style -->
+            <div class="detail-field">
+                <label for="style">Style:</label>
+                <select id="style" name="style" class="form-select" style="width: auto; min-width: min-content;">
+                    <option
+                        th:each="style : ${T(com.movsoftware.blockhouse.route_tracker.pojo.BoulderingStyle).values()}"
+                        th:value="${style.name()}" th:text="${style.displayName}">Style</option>
+                </select>
+            </div>
+
+            <!-- Route Wall -->
+            <div class="detail-field">
+                <label for="wall">Wall:</label>
+                <select id="wall" name="wallId" required class="form-select"
+                    style="width: auto; min-width: min-content;">
+                    <option value="" selected disabled>Select a wall</option>
+                    <option th:each="wall : ${activeWalls}" th:value="${wall.id}" th:text="${wall.name}"></option>
+                </select>
+            </div>
+            <div class="detail-field">
+                <textarea class="comment-box" id="description" name="description" rows="2" required
+                    placeholder="Provide brief description or tape color"></textarea>
+            </div>
+
+            <input type="hidden" id="gymId" name="gymId" th:value="${gym.id}" required>
+
+            <div style="display: flex; justify-content: center;">
+                <input type="submit" class="btn btn-primary" value="Save Route">
+            </div>
+        </form>
+    </div>
+
+    <!-- Hidden Add Wall Form -->
+    <div id="addWallForm" style="display: none;">
+        <form action="/wall/save_wall" method="post" style="background: none;">
+
+            <!-- Route Name -->
+            <div class="detail-field">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" class="detail-title edit-input" required>
+            </div>
+
+            <input type="hidden" id="gymId" name="gymId" th:value="${gym.id}" required>
+
+            <div style="display: flex; justify-content: center;">
+                <input type="submit" class="btn btn-primary" value="Save Wall">
+            </div>
+        </form>
+    </div>
+
+    <!-- Hidden Edit Wall Form -->
+    <div id="editWallSection" style="display: none;">
+        <!-- Drop-down to Select a Wall -->
+        <select id="wallDropdown" class="form-select" style="margin-left: 1em; width: auto; min-width: min-content;">
+            <option value="" disabled selected>Select a Wall</option>
+            <option th:each="wall : ${activeWalls}" th:value="${wall.id}" th:text="${wall.name}"></option>
+        </select>
+
+        <!-- Hidden Form to Edit the Selected Wall -->
+        <div id="editWallForm" style="display: none;">
+            <form action="/wall/update_wall" method="post" style="background: none;">
+
+                <!-- Wall Name -->
+                <div class="detail-field">
+                    <label for="editName">Name:</label>
+                    <input type="text" id="editName" name="name" class="detail-title edit-input" required>
+                </div>
+
+                <!-- Wall Status -->
+                <div class="detail-field">
+                    <label for="editIsActive">Is Active:</label>
+                    <input type="checkbox" id="editIsActive" name="isActive">
+                </div>
+
+                <!-- Hidden Field to Store the Selected Wall's ID -->
+                <input type="hidden" id="editWallId" name="wallId">
+
+                <input type="hidden" id="gymId" name="gymId" th:value="${gym.id}" required>
+
+                <div style="display: flex; justify-content: center;">
+                    <input type="submit" class="btn btn-primary" value="Update Wall">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hidden Edit Route Form -->
+    <div id="editRouteSection" style="display: none;">
+        <!-- Drop-down to Select a Route -->
+        <select id="routeDropdown" class="form-select" style="margin-left: 1em; width: auto; min-width: min-content;">
+            <option value="" disabled selected>Select a Route</option>
+            <option th:each="route : ${routes}" th:value="${route.id}" th:text="${route.name}"></option>
+        </select>
+
+        <!-- Hidden Form to Edit the Selected Route -->
+        <div id="editRouteForm" style="display: none;">
+            <form action="/route/update_route" method="post" style="background: none;">
+                <input type="hidden" id="gymId" name="gymId" th:value="${gym.id}" required>
+                <!-- Route Name -->
+                <div class="detail-field">
+                    <label for="editRouteName">Name:</label>
+                    <input type="text" id="editRouteName" name="name" class="detail-title edit-input">
+                </div>
+
+                <!-- Setter Name -->
+                <div class="detail-field">
+                    <label for="editSetterName">Setter:</label>
+                    <input type="text" id="editSetterName" name="setterName">
+                </div>
+
+                <!-- First Ascent -->
+                <div class="detail-field">
+                    <label for="editFirstAscent">First Ascent:</label>
+                    <input type="text" id="editFirstAscent" name="firstAscent">
+                </div>
+
+                <!-- Route Grade -->
+                <div class="detail-field">
+                    <label for="editGrade">Grade:</label>
+                    <select id="editGrade" name="grade" required class="form-select"
+                        style="width: auto; min-width: min-content;">
+                        <option th:each="grade : ${T(com.movsoftware.blockhouse.route_tracker.pojo.Grade).values()}"
+                            th:value="${grade.name()}" th:text="${grade.displayName}">Grade</option>
+                    </select>
+                </div>
+
+                <!-- Route Style -->
+                <div class="detail-field">
+                    <label for="editStyle">Style:</label>
+                    <select id="editStyle" name="style" class="form-select"
+                        style="width: auto; min-width: min-content;">
+                        <option
+                            th:each="style : ${T(com.movsoftware.blockhouse.route_tracker.pojo.BoulderingStyle).values()}"
+                            th:value="${style.name()}" th:text="${style.displayName}">Style</option>
+                    </select>
+                </div>
+
+                <div class="detail-field">
+                    <label for="editWall">Wall:</label>
+                    <select id="editWall" name="wallId" required class="form-select"
+                        style="width: auto; min-width: min-content;">
+                        <option value="" selected disabled>Select a wall</option>
+                        <option th:each="wall : ${activeWalls}" th:value="${wall.id}" th:text="${wall.name}"></option>
+                    </select>
+                </div>
+
+                <!-- Description -->
+                <div class="detail-field">
+                    <label for="editDescription">Description:</label>
+                    <input id="editDescription" name="description"></textarea>
+                </div>
+
+                <!-- Route Status -->
+                <div class="detail-field">
+                    <label for="editIsActive">Is Active:</label>
+                    <input type="checkbox" id="editIsActive" name="isActive" checked>
+                </div>
+
+                <!-- Hidden Field to Store the Selected Route's ID -->
+                <input type="hidden" id="editRouteId" name="routeId">
+
+                <div style="display: flex; justify-content: center;">
+                    <input type="submit" class="btn btn-primary" value="Update Route">
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+</body>
+<script src="src=logout.js" th:src="@{/logout.js}"></script>
+<script src="src=adminPage.js" th:src="@{/adminPage.js}"></script>
+<script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var mainServerUrl = /*[[${mainServerUrl}]]*/ 'defaultMainServerUrl';
+    /*]]>*/
+    /*<![CDATA[*/
+    var activeWalls = /*[[${activeWalls}]]*/ 'defaultWall';
+    /*]]>*/
+    /*<![CDATA[*/
+    var routes = /*[[${routes}]]*/ 'defaultWall';
+    /*]]>*/
+</script>
+
+</html>

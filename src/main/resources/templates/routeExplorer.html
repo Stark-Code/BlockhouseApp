@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="/common.css">
+    <title>BlockHouse Routes</title>
+</head>
+
+<body>
+    <!-- Header -->
+    <div th:insert="~{fragments/header}"></div>
+    <!-- Nav Bar -->
+    <div th:insert="~{fragments/nav}"></div>
+
+    <section class="newsfeed">
+        <div class="newsfeed-content">
+
+            <!-- Display updateMessage flash attribute if it exists -->
+            <div th:if="${updateMessage != null}" class="update-message">
+                <span th:text="${updateMessage}"></span>
+            </div>
+            <form id="sortForm" action="/user/update_sort_by" method="post"
+                style="display: flex; justify-content: end; background: none;">
+                <input type="hidden" name="gymId" th:value="${gym.id}">
+                <select id="sortBy" name="strSortBy" onchange="this.form.submit()" class="form-select" style="width: auto; min-width: min-content;">
+                    <option value="HARDEST" th:selected="${loggedInUser.sortBy.name() == 'HARDEST'}">Hardest</option>
+                    <option value="EASIEST" th:selected="${loggedInUser.sortBy.name() == 'EASIEST'}">Easiest</option>
+                    <option value="RATING" th:selected="${loggedInUser.sortBy.name() == 'RATING'}">Rating</option>
+                    <option value="MOST_REPEATED" th:selected="${loggedInUser.sortBy.name() == 'MOST_REPEATED'}">Most
+                        Repeated</option>
+                    <option value="LEAST_REPEATED" th:selected="${loggedInUser.sortBy.name() == 'LEAST_REPEATED'}">Least
+                        Repeated</option>
+                    <!-- <option value="STYLE" th:selected="${loggedInUser.sortBy.name() == 'STYLE'}">Style</option> -->
+                </select>
+            </form>
+
+            <!-- Display walls and their routes -->
+            <div th:each="wallEntry, stat : ${wallIdToRoutesMap}">
+                <!-- Display routes under this wall -->
+                <ul style="padding-left: 0em;">
+                    <li th:each="route, routeStat : ${wallEntry.value}" th:if="${route.isActive}">                        <!-- Display wall name only for the first route in the list -->
+                        <th:block th:if="${routeStat.index == 0}">
+                            <span class="wall-name" th:text="${route.wall.name}"></span>
+                            <span class="author" th:text="${route.wall.formattedSetOnDate}"></span>
+                        </th:block>
+                        <div class="category"
+                            style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <a th:href="@{/route/get_route(routeId=${route.id}, gymId=${gym.id})}">
+                                    <span th:text="${route.name}" class="route-name"></span>
+                                </a>
+                                <br>
+                                <span th:text="${route.totalSends}"></span> <span>repeats</span>
+                                <br>
+                                <!-- For the main grade -->
+                                <span>Difficulty: </span><span th:style="'background-color: ' + ${route.grade}"
+                                    class="grade"></span>
+
+                                <div class="route-details">
+                                    <div class="star-rating">
+                                        <th:block th:each="star : ${#numbers.sequence(1, 5)}">
+                                            <!-- Full Star -->
+                                            <span th:if="${star <= route.rating}" class="full-star"></span>
+
+                                            <!-- Half Star -->
+                                            <span th:if="${star > route.rating and star - 1 < route.rating}"
+                                                class="half-star"></span>
+                                            <!-- Half-star symbol, you can replace it with your own -->
+
+                                            <!-- Empty Star -->
+                                            <span th:if="${star > route.rating and star - 1 >= route.rating}"
+                                                class="empty-star"></span>
+                                        </th:block>
+                                    </div>
+                                    <p><span class="author" th:text="'(' + ${route.style} + ')'"></span></p>
+                                </div>
+                            </div>
+                            <th:block th:if="${hasClimbedMap.get(route.id)}">
+                                <img src="/images/checkMarkSent.png" class="checkMark" alt="Sent">
+                            </th:block>
+
+                            <!-- Display the checkMarkUnsent.png image if the user has NOT climbed this route -->
+                            <th:block th:unless="${hasClimbedMap.get(route.id)}">
+                                <img src="/images/checkMarkUnsent.png" class="checkMark checkMarkUnsent" alt="Unsent">
+                            </th:block>
+                        </div>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
+    <!-- <script src="src=logout.js" th:src="@{/logout.js}"></script>
+    <script src="src=newsfeed.js" th:src="@{/newsfeed.js}"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var mainServerUrl = /*[[${mainServerUrl}]]*/ 'defaultMainServerUrl';
+        /*]]>*/
+    </script>
+</body>

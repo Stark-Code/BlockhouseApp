@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Blockhouse Bouldering</title>
+    <link rel="stylesheet" href="/home.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+<body class="container">
+    <svg class="background-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 2000">
+        <path d="M0,1000 C800,600 1600,1400 2000,1000" stroke="#007bff" stroke-width="1" fill="none">
+        </path>
+    </svg>
+    <svg class="background-svg" transform="rotate(15)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 2000">
+        <path d="M0,1000 C100,600 1600,1400 2000,1000" stroke="#007bff" stroke-width="1" fill="none">
+        </path>
+    </svg>
+    <svg class="background-svg" transform="rotate(35)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 2000">
+        <path d="M0,1000 C800,600 1600,1400 2000,1000" stroke="#007bff" stroke-width="1" fill="none">
+        </path>
+    </svg>
+    
+    <div class="register-div story" id="register-div">
+        <h2>Sign Up</h2>
+        <p>Please enter the registration code and the email address associated with the code below</p>
+        <input type="email" id="email" class="form-control mb-2" placeholder="Email" required>
+        <input type="text" id="registration_code" class="form-control mb-2" placeholder="Registration Code" th:value="${invite_code != null ? invite_code : ''}" required>
+        <input type="text" id="first_name" class="form-control mb-2" placeholder="First Name" required>
+        <input type="text" id="last_name" class="form-control mb-2" placeholder="Last Name" required>
+        <input type="password" id="password" class="form-control mb-2" placeholder="Password" minlength="8" required>
+        <input type="password" id="password_confirm" class="form-control mb-2" placeholder="Confirm Password" minlength="8" required>
+        <button onclick="signup()" class="btn btn-primary">Sign Up</button>
+    </div>
+    <div class="wave"></div>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var mainServerUrl = /*[[${mainServerUrl}]]*/ 'defaultMainServerUrl';
+        var authServerUrl = /*[[${authServerUrl}]]*/ 'defaultAuthServerUrl';
+        /*]]>*/
+    </script>
+    <script src="register.js" th:src="@{/register.js}"></script>
+    
+</body>
+</html>

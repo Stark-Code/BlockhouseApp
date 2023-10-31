@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Block House Login</title>
+    <link rel="stylesheet" href="/home.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+
+
+
+<body>
+    <!-- Header -->
+    <div th:insert="~{fragments/header}" style="margin-top: 2em;"></div>
+    <svg class="background-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 2000">
+        <path d="M0,1000 C800,600 1600,1400 2000,1000" stroke="#007bff" stroke-width="1" fill="none">
+        </path>
+    </svg>
+    <svg class="background-svg" style="rotate: 15deg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 2000">
+        <path d="M0,1000 C100,600 1600,1400 2000,1000" stroke="#007bff" stroke-width="1" fill="none">
+        </path>
+    </svg>
+    <svg class="background-svg" style="rotate: 35deg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 2000">
+        <path d="M0,1000 C800,600 1600,1400 2000,1000" stroke="#007bff" stroke-width="1" fill="none">
+        </path>
+    </svg>
+
+    <div class="register-div story" id="login-div" style="margin-top: 25%;">
+        <h2>Login</h2>
+        <input type="email" id="login-email" class="form-control p-2 mb-2"
+            placeholder="Email" style="font-size: 2em;">
+        <input type="password" id="login-password" class="form-control mb-4" placeholder="Password" style="font-size: 2em;">
+        <button onclick="login()" class="btn btn-primary mr-2" style="font-size: 2em;">Login</button>
+        <button onclick="resetPassword()" class="btn btn-secondary" style="font-size: 2em;">Forgot password</button>
+        <div id="login-error" style="width: 100%; display: none; color: red; margin-top: 1em;">Login error.</div>
+        <div class="wave"></div>
+    </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var mainServerUrl = /*[[${mainServerUrl}]]*/ 'defaultMainServerUrl';
+        var authServerUrl = /*[[${authServerUrl}]]*/ 'defaultAuthServerUrl';
+        /*]]>*/
+    </script>
+    
+    <script src="../login.js"></script>
+    
+</body>
+
+</html>
